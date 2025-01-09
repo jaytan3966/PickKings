@@ -285,12 +285,12 @@ export async function checkWin(){
 
             const value = parseInt($(row).find("td").eq(ind).text().trim());
             
-            if (player.determination == "OVER" && value > player.points){
+            if (player.determination == "OVER" && (value > player.points)){
                 const {error: error1} = await supabase.from("pickstats").update({success: "HIT"}).eq("name", player.name).eq("objective", player.objective);
                 if (error1){
                     console.error(error1);
                 }
-            } else if (player.determination == "UNDER" && value < player.points){
+            } else if (player.determination == "UNDER" && (value < player.points)){
                 const {error: error1} = await supabase.from("pickstats").update({success: "HIT"}).eq("name", player.name).eq("objective", player.objective);
                 if (error1){
                     console.error(error1);

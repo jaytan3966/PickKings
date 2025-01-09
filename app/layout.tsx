@@ -21,7 +21,7 @@ export default function RootLayout({
     <html lang="en" className={GeistSans.className} suppressHydrationWarning>
       <head>
         <link href="https://fonts.googleapis.com/css2?family=Danfo:wght@400;700&display=swap" rel="stylesheet" />
-        <link rel="icon" href = "/icon.png"/>
+        <link rel="icon" href="/favicon.ico" />
       </head>
       <body style={{ backgroundColor: '#18243c' }} className="bg-opacity-40min-h-[100vh] text-white">
         <ThemeProvider
