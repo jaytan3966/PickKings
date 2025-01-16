@@ -16,11 +16,14 @@ const handleScrollDown = (ref: React.RefObject<HTMLDivElement | null>) => {
         });
     }
 }
+const scrollHome = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
 export const Navbar = ({picksRef, ownRef, aboutRef} : NavbarProps) => {
     return (
         <div className="justify-between flex items-center bg-[#18243c]">
-            <h1 className="font-danfo text-3xl md:text-4xl lg:text-6xl text-center p-5 px-10 animate-left">Pick Kings</h1>
+            <button className="font-danfo text-3xl md:text-4xl lg:text-6xl text-center p-5 px-10 animate-left" onClick={() => scrollHome()}>Pick Kings</button>
             <div className="flex animate-right text-sm md:text-1xl lg:text-2xl font-semibold">
             <button className='px-4 transition ease-in-out delay-150 hover:-translate-y-1 duration-300' onClick={() => handleScrollDown(picksRef)}>Today's Picks</button>
             <button className='px-4 transition ease-in-out delay-150 hover:-translate-y-1 duration-300' onClick={() => handleScrollDown(ownRef)}>Build Your Own</button>
