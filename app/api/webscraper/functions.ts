@@ -3,6 +3,7 @@ import axios from 'axios';
 import puppeteer from 'puppeteer';
 import { createClient } from '@/utils/supabase/server';
 import { teamLoc } from '@/app/components/types';
+import { create } from 'domain';
 
 async function findLink(name: string){
     
@@ -240,16 +241,44 @@ export default async function scrape(stat: string) {
                         console.error(error2);
                     }
                 }
-                
             }
         }
     });
 
     await Promise.all(playerPromises);
-
+    
     await browser.close();
 }
 
+type TeamInfo = {
+    [team: string]: {
+        team: string;
+        players: string[];
+    };
+};
+
+export async function getAllTeams(){
+    const supabase = await createClient();
+    const {data: allteams, error: fetchError } = await supabase.from("pickdisplay").select();
+    let teamsInfo: TeamInfo = {};
+    if (allteams){
+       
+        for (var i = 0; i<allteams.length; i++){
+            const { data: existingTeam, error: fetchError } = await supabase.from("todaysteams").select("id").eq("team", allteams[i].team).single();
+            if (!existingTeam){
+                teamsInfo[allteams[i].team] = {
+                    team: allteams[i].team,
+                    players: [allteams[i].name],
+                }
+            } else {
+                
+                teamsInfo[allteams[i].team].players.push(allteams[i].name);
+            }
+            const { error: updateError } = await supabase.from("todaysteams")
+                .update({ players: teamsInfo[allteams[i].team].players }).eq("team", allteams[i].team);
+        }
+    }   
+}
 export async function checkWin(){
     const supabase = await createClient();
     const {data: data, error: error} = await supabase.from("pickdisplay").select();

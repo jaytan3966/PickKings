@@ -1,18 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import scrape from '../webscraper/functions';
-import { checkWin } from '../webscraper/functions';
+import { checkWin, getAllTeams } from '../webscraper/functions';
 
 export async function POST(req: NextRequest){
 
     const supabase = await createClient();
     const {data: clear1, error: error1} = await supabase.from("pickdisplay").delete().neq("points", 0);
     const {data: clear2, error: error2} = await supabase.from("pickstats").delete().neq("points", 0);
+    const {data: clear3, error: error3} = await supabase.from("todaysteams").delete().neq("team", "hello");
 
     try{
         await scrape("PTS");
         await scrape("REB");
         await scrape("AST");
+        await getAllTeams();
         return NextResponse.json({message: 'Scraped successfully!'});
     } catch (error){
         console.error(error);
