@@ -62,7 +62,7 @@ export const HomeIntro = () => {
                     </div>
                 </div>
             </div>
-      </div> 
+        </div> 
     )
 }
 export const Footer = () => {
